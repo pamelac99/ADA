@@ -13,11 +13,11 @@ ssa$gender_cat <- 0
 ssa$gender_cat <- ifelse(ssa$Gender == "Female", 1, 0)
 ssa<-dplyr::rename(ssa, c("covidvaccine"="COVID Vaccine"))
 ssa <- mutate(ssa, covidvaccine_cat = case_when(
-  covidvaccine == "Definitely" ~ "0",
-  covidvaccine == "Probably" ~ "1",
-  covidvaccine == "Probably not" ~ "2",
-  covidvaccine == "Definitely not" ~ "3",
-  covidvaccine == "Unsure" ~ "4",
+  covidvaccine == "Probably" ~ "0",
+  covidvaccine == "Probably not" ~ "1",
+  covidvaccine == "Unsure" ~ "2",
+  covidvaccine == "Definitely" ~ "3",
+  covidvaccine == "Definitely not" ~ "4",
   TRUE ~ "NA"
 ))
 #view(ssa)
@@ -28,7 +28,7 @@ table(ssa_new$gender_cat)
 table(ssa_new$agegroup_cat)
 table(ssa_new$covidvaccine_cat)
 
-#Execute a mutlinomial regression model 
+#Execute a mutlinomial regression model with gender
 ssa_1 <- multinom(covidvaccine_cat ~ gender_cat, ssa_new)
 output <- summary(ssa_1)
 output
@@ -40,8 +40,26 @@ p
 
 exp(coef(ssa_1))
 
-tidy(ssa_1, conf.int = TRUE)
+tidy(ssa_1, conf.int = TRUE, exponentiate = "TRUE")
 tbl_regression(ssa_1, exp = TRUE)
+
+#Execute a mutlinomial regression model with gender and age
+ssa_2 <- multinom(covidvaccine_cat ~ gender_cat + agegroup_cat, ssa_new)
+output <- summary(ssa_2)
+output
+
+exp(confint(ssa_2, level=0.95))
+z <- summary(ssa_2)$coefficients/summary(ssa_2)$standard.errors
+p <- (1 - pnorm(abs(z), 0, 1))*2
+p
+
+exp(coef(ssa_2))
+
+tidy(ssa_2, conf.int = TRUE, exponentiate = "TRUE")
+tbl_regression(ssa_2, exp = TRUE)
+
+
+
 
 
 
