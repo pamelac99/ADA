@@ -44,19 +44,19 @@ tidy(ssa_1, conf.int = TRUE, exponentiate = "TRUE")
 tbl_regression(ssa_1, exp = TRUE)
 
 #Execute a mutlinomial regression model with gender and age
-ssa_2 <- multinom(covidvaccine_cat ~ gender_cat + agegroup_cat, ssa_new)
-output <- summary(ssa_2)
-output
+#ssa_2 <- multinom(covidvaccine_cat ~ gender_cat + agegroup_cat, ssa_new)
+#output <- summary(ssa_2)
+#output
 
-exp(confint(ssa_2, level=0.95))
-z <- summary(ssa_2)$coefficients/summary(ssa_2)$standard.errors
-p <- (1 - pnorm(abs(z), 0, 1))*2
-p
+#exp(confint(ssa_2, level=0.95))
+#z <- summary(ssa_2)$coefficients/summary(ssa_2)$standard.errors
+#p <- (1 - pnorm(abs(z), 0, 1))*2
+#p
 
-exp(coef(ssa_2))
+#exp(coef(ssa_2))
 
-tidy(ssa_2, conf.int = TRUE, exponentiate = "TRUE")
-tbl_regression(ssa_2, exp = TRUE)
+#tidy(ssa_2, conf.int = TRUE, exponentiate = "TRUE")
+#tbl_regression(ssa_2, exp = TRUE)
 
 
 
